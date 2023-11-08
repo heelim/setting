@@ -1,6 +1,7 @@
 set shell=/bin/zsh
 
 set encoding=utf-8
+
 set mouse=a
 
 " Syntax Highlighting
@@ -43,7 +44,7 @@ Plug 'Chiel92/vim-autoformat'
 Plug 'chrisbra/vim-commentary'
 Plug 'mhinz/vim-signify'
 Plug 'antiagainst/vim-tablegen'
-"Plug 'mbbill/undotree'
+Plug 'mbbill/undotree'
 call plug#end()
 
 colorscheme gruvbox
@@ -55,11 +56,23 @@ autocmd VimEnter * wincmd p
 let g:formatterpath = ['/usr/lib/llvm-10/bin']
 noremap <F2> :Autoformat<CR>
 noremap <F4> :NERDTreeFocus<CR>
-"noremap <F5> :UndotreeToggle<CR>
+noremap <F5> :UndotreeToggle<CR>
+
+if has("persistent_undo")
+  let target_path = expand('~/.undodir')
+
+  " create the directory and any parent directories
+  " if the location does not exist.
+  if !isdirectory(target_path)
+    call mkdir(target_path, "p", 0700)
+  endif
+
+  let &undodir=target_path
+  set undofile
+endif
 
 let g:NERDTreeMinimalMenu=0
 let g:NERDTreeHijackNetrw=0
-
 
 " LLVM Makefile highlighting mode
 augroup filetype
