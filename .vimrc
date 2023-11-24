@@ -45,18 +45,39 @@ Plug 'chrisbra/vim-commentary'
 Plug 'mhinz/vim-signify'
 Plug 'antiagainst/vim-tablegen'
 Plug 'mbbill/undotree'
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 call plug#end()
 
 colorscheme gruvbox
 set bg=dark
 
-" autocmd VimEnter * NERDTree
+autocmd VimEnter * NERDTree
 autocmd VimEnter * wincmd p
 
 let g:formatterpath = ['/usr/lib/llvm-10/bin']
 noremap <F2> :Autoformat<CR>
 noremap <F4> :NERDTreeFocus<CR>
 noremap <F5> :UndotreeToggle<CR>
+
+let NERDTreeWinPos = "left"   " NERD Tree위치 = 왼쪽
+nmap  <C-f> :NERDTreeFind<CR> " Ctrl + f  NERDtree Toggle
+nmap  <C-e> :NERDTreeToggle<CR> " Ctrl + e  NERDtree Toggle
+let g:NERDTreeGitStatusIndicatorMapCustom = {
+  \ 'Modified'  :'✹',
+  \ 'Staged'    :'✚',
+  \ 'Untracked' :'✭',
+  \ 'Renamed'   :'➜',
+  \ 'Unmerged'  :'═',
+  \ 'Deleted'   :'✖',
+  \ 'Dirty'     :'✗',
+  \ 'Ignored'   :'☒',
+  \ 'Clean'     :'✔︎',
+  \ 'Unknown'   :'?',
+  \ }
+
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 
 if has("persistent_undo")
   let target_path = expand('~/.undodir')
@@ -71,8 +92,8 @@ if has("persistent_undo")
   set undofile
 endif
 
-let g:NERDTreeMinimalMenu=0
-let g:NERDTreeHijackNetrw=0
+" let g:NERDTreeMinimalMenu=1
+" let g:NERDTreeHijackNetrw=1
 
 " LLVM Makefile highlighting mode
 augroup filetype
