@@ -1,7 +1,6 @@
 set shell=/bin/zsh
 
 set encoding=utf-8
-
 set mouse=a
 
 " Syntax Highlighting
@@ -23,7 +22,7 @@ set cindent " C언어 자동 들여쓰기
 set bs=eol,start,indent
 set history=256
 set laststatus=2 " 상태바 표시 항상
-"set paste " 붙여넣기 계단현상 없애기
+set paste " 붙여넣기 계단현상 없애기
 set shiftwidth=2 " 자동 들여쓰기 너비 설정
 set showmatch " 일치하는 괄호 하이라이팅
 set smartcase " 검색시 대소문자 구별
@@ -53,29 +52,39 @@ call plug#end()
 colorscheme gruvbox
 set bg=dark
 
-autocmd VimEnter * NERDTree
+" autocmd VimEnter * NERDTree
 autocmd VimEnter * wincmd p
+
+autocmd BufReadPost *
+      \ if line("'\"") > 1 && line("'\"") <= line("$") |
+      \ exe "normal! g`\"" |
+      \ endif
 
 let g:formatterpath = ['/usr/lib/llvm-10/bin']
 noremap <F2> :Autoformat<CR>
 noremap <F4> :NERDTreeFocus<CR>
 noremap <F5> :UndotreeToggle<CR>
 
+" Let clangd fully control code completion
+let g:ycm_clangd_uses_ycmd_caching = 0
+" Use installed clangd, not YCM-bundled clangd which doesn't get updates.
+let g:ycm_clangd_binary_path = exepath("clangd")
+
 let NERDTreeWinPos = "left"   " NERD Tree위치 = 왼쪽
 nmap  <C-f> :NERDTreeFind<CR> " Ctrl + f  NERDtree Toggle
 nmap  <C-e> :NERDTreeToggle<CR> " Ctrl + e  NERDtree Toggle
 let g:NERDTreeGitStatusIndicatorMapCustom = {
-  \ 'Modified'  :'✹',
-  \ 'Staged'    :'✚',
-  \ 'Untracked' :'✭',
-  \ 'Renamed'   :'➜',
-  \ 'Unmerged'  :'═',
-  \ 'Deleted'   :'✖',
-  \ 'Dirty'     :'✗',
-  \ 'Ignored'   :'☒',
-  \ 'Clean'     :'✔︎',
-  \ 'Unknown'   :'?',
-  \ }
+      \ 'Modified'  :'✹',
+      \ 'Staged'    :'✚',
+      \ 'Untracked' :'✭',
+      \ 'Renamed'   :'➜',
+      \ 'Unmerged'  :'═',
+      \ 'Deleted'   :'✖',
+      \ 'Dirty'     :'✗',
+      \ 'Ignored'   :'☒',
+      \ 'Clean'     :'✔︎',
+      \ 'Unknown'   :'?',
+      \ }
 
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 
@@ -102,7 +111,3 @@ augroup filetype
   au! BufRead,BufNewFile *.td     set filetype=tablegen
 augroup END
 
-autocmd BufReadPost *
-      \ if line("'\"") > 1 && line("'\"") <= line("$") |
-      \ exe "normal! g`\"" |
-      \ endif
