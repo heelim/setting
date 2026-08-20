@@ -36,7 +36,7 @@ set statusline=\ %<%l:%v\ [%P]%=%a\ %h%m%r\ %F\
 set expandtab                                   " indents <Tab> as spaces
 
 call plug#begin()
-Plug 'Valloric/YouCompleteMe'
+" Plug 'Valloric/YouCompleteMe'
 Plug 'morhetz/gruvbox'
 Plug 'scrooloose/nerdtree'
 Plug 'Chiel92/vim-autoformat'
